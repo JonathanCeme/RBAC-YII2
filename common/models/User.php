@@ -38,7 +38,7 @@ use frontend\models\Perfil; /* usa perfil */
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    //const ESTADO_ACTIVO = 1;
+    const ESTADO_ACTIVO = 1;
 
     public static function tableName()
     {
