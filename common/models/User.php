@@ -11,6 +11,10 @@ use yii\helpers\Security;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
+
+
+
+use common\models\ValorHelpers;
 use yii\helpers\ArrayHelper;
 use backend\models\Estado; /* usa estado */
 use backend\models\TipoUsuario; /* usa esatdo tipo usuario */
@@ -34,7 +38,7 @@ use frontend\models\Perfil; /* usa perfil */
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const ESTADO_ACTIVO = 1;
+    //const ESTADO_ACTIVO = 1;
 
     public static function tableName()
     {
@@ -64,7 +68,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['estado_id', 'default', 'value' => self::ESTADO_ACTIVO],
+            ['estado_id', 'default', 'value' => ValorHelpers::getEstadoId('Activo')
+        ],
             
             [['estado_id'],'in', 'range'=>array_keys($this->getEstadoLista())],//regla de validación para el rango, ya que tenemos acceso a getEstadoLista
 
@@ -127,7 +132,8 @@ public function attributeLabels()
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'estado_id' => self::ESTADO_ACTIVO]);
+        return static::findOne(['username' => $username,'estado_id' => ValorHelpers::getEstadoId('Activo')
+ /* 'estado_id' => self::ESTADO_ACTIVO */]);
     }
 
     /**
@@ -143,7 +149,8 @@ public function attributeLabels()
         }
         return static::findOne([
             'password_reset_token' => $token,
-            'estado_id' => self::ESTADO_ACTIVO,
+            'estado_id' => ValorHelpers::getEstadoId('Activo')
+,
         ]);
     }
 
