@@ -10,6 +10,8 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
+use frontend\models\perfil;
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -39,7 +41,28 @@ AppAsset::register($this);
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    }     
+    } 
+    else
+    {
+         //Título de menú con una opción aqui agregamos el menu 
+         $menuItems[] = ['label' => 'Admon user', 'url' => ['/site/index'],
+         'options' =>['class' =>'dropdown'],
+         'template'=>'<a href="{url}" class="href_class">{label}</a>',
+         'items' =>[ ['label' => 'usuarios', 'url' => ['/project']],
+                     ['label' => 'perfil', 'url' => ['/perfil']],
+                     ['label' => 'Project User', 'url' => ['/project-user']],
+                     ],
+         ];  
+
+         $menuItems[] = ['label' => 'Transacciones', 'url' => ['/site/index'],
+         'options' =>['class' =>'dropdown'],
+         'template'=>'<a href="{url}" class="href_class">{label}</a>',
+         'items' =>[ ['label' => 'Compras', 'url' => ['/compras']],
+                     ['label' => 'Ventas', 'url' => ['/ventas']],
+                     ['label' => 'Devoluciones', 'url' => ['/devoluciones']],
+                     ],
+         ]; 
+    }    
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
         'items' => $menuItems,
