@@ -4,9 +4,10 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var frontend\models\perfil $model */
+/* Simplemente estamos eliminando la ‘s’ en Perfil. */
 
 $this->title = 'Create Perfil';
-$this->params['breadcrumbs'][] = ['label' => 'Perfils', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Perfil', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="perfil-create">
