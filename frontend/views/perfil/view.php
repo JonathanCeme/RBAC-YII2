@@ -8,9 +8,9 @@ use common\models\PermisosHelpers;
  * @var yii\web\View $this
  * @var frontend\models\Perfil $model
  */
-
+/* Perfiles --> perfil */
 $this->title = "Perfil de " . $model->user->username;
-$this->params['breadcrumbs'][] = ['label' => 'Perfiles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'perfil', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
