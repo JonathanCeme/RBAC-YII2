@@ -2,11 +2,14 @@
 
 namespace frontend\controllers;
 
-use frontend\models\perfil;
+use Yii;
+use frontend\models\Perfil;
 use frontend\models\search\PerfilSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\PermisosHelpers;
+use common\models\RegistrosHelpers;
 
 /**
  * PerfilController implements the CRUD actions for perfil model.
@@ -16,36 +19,53 @@ class PerfilController extends Controller
     /**
      * @inheritDoc
      */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+public function behaviors()
+{
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'view','create', 'update', 'delete'],
+                'rules' => [
+                        [
+                        'actions' => ['index', 'view','create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        ],
+                    
                     ],
                 ],
-            ]
-        );
-    }
+        
+            'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'delete' => ['post'],
+                    ],
+                ],
+        ];
+}
 
     /**
      * Lists all perfil models.
      *
      * @return string
      */
-    public function actionIndex()
-    {
-        $searchModel = new PerfilSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+public function actionIndex()
+{
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+    if ($ya_existe = RegistrosHelpers::userTiene('perfil')) {
+
+        return $this->render('view', [
+
+            'model' => $this->findModel($ya_existe),
         ]);
+
+    } else {
+
+        return $this->redirect(['create']);
+
     }
+
+}
 
     /**
      * Displays a single perfil model.
@@ -53,34 +73,55 @@ class PerfilController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+public function actionView()
+{
+    if ($ya_existe = RegistrosHelpers::userTiene('perfil')) {
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+
+            'model' => $this->findModel($ya_existe),
+
         ]);
+
+    } else {
+
+        return $this->redirect(['create']);
+
     }
+}
 
     /**
      * Creates a new perfil model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
-    {
-        $model = new perfil();
+public function actionCreate()
+{
+    $model = new Perfil;
+    
+    $model->user_id = \Yii::$app->user->identity->id;      
+    
+    if ($ya_existe = RegistrosHelpers::userTiene('perfil')) {
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
+        return $this->render('view', [
 
+                'model' => $this->findModel($ya_existe),
+
+            ]);
+    
+    } elseif ($model->load(Yii::$app->request->post()) && $model->save()){
+                        
+        return $this->redirect(['view']);
+                        
+    } else {
+                
         return $this->render('create', [
-            'model' => $model,
-        ]);
+
+                'model' => $model,
+
+                ]);
     }
+}
 
     /**
      * Updates an existing perfil model.
@@ -89,17 +130,28 @@ class PerfilController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
-        $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            
+        if($model =  Perfil::find()->where(['user_id' => 
+            Yii::$app->user->identity->id])->one()) {
+            
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                
+                return $this->redirect(['view']);
+            
+            } else {
+                
+                return $this->render('update', [
+                    'model' => $model, 
+                ]);
+            }
+        
+        } else {
+                
+            throw new NotFoundHttpException('No Existe el Perfil.');
+                
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -109,12 +161,15 @@ class PerfilController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
+    public function actionDelete()
+{
+        
+    $model =  Perfil::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+            
+    $this->findModel($model->id)->delete();
+        
+    return $this->redirect(['site/index']);
+}
 
     /**
      * Finds the perfil model based on its primary key value.
