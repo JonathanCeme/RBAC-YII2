@@ -12,7 +12,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 
-
+use backend\models\Rol; /* usa rol */
 
 use common\models\ValorHelpers;
 use yii\helpers\ArrayHelper;
