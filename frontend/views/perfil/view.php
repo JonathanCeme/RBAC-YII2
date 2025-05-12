@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         if (PermisosHelpers::userDebeSerPropietario('perfil', $model->id)) {
 
             echo Html::a('Update', ['update', 'id' => $model->id],
-                ['class' => 'btn btn-primary']);
+                                    ['class' => 'btn btn-primary']);
         } ?>
 
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [

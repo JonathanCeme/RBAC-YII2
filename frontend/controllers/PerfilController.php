@@ -43,12 +43,15 @@ public function behaviors()
                 ],
         ];
 }
-
     /**
      * Lists all perfil models.
      *
      * @return string
      */
+
+/* Este está pensado para devolver una lista de resultados y usa un modelo diferente, PerfieSearch, que
+extiende el modelo perfil para proveer de funcionalidad de búsqueda. Pero en el caso del perfil de
+ usuario, sólo permitimos un perfil por usuario, así que no usaremos este código. */
 public function actionIndex()
 {
 
@@ -57,6 +60,7 @@ public function actionIndex()
         return $this->render('view', [
 
             'model' => $this->findModel($ya_existe),
+
         ]);
 
     } else {
