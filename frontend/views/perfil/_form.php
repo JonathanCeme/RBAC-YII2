@@ -16,9 +16,14 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => 45]) ?>
 
     <?= $form->field($model, 'apellido')->textInput(['maxlength' => 45]) ?>
-       <!--  utilice la libreria yii\jui\DatePicker para el campo fecha_nacimiento -->
-    <?php echo $form->field($model,'fecha_nacimiento')->widget(DatePicker::className(),
-    ['clientOptions' => ['dateFormat' => 'yy-mm-dd']]); ?>
+    <!--  utilice la libreria yii\jui\DatePicker para el campo fecha_nacimiento -->
+    <?php echo $form->field($model,'fecha_nacimiento')->
+                widget(DatePicker::className(),[
+                'dateFormat' => 'yyyy-MM-dd',
+                'clientOptions' => [
+                        'yearRange' => '-115:+0', 
+                        'changeYear' => true]
+    ]) ?>
 
     <?= $form->field($model, 'genero_id')->dropDownList($model->generoLista, ['prompt' => 'Por favor Seleccione Uno' ]);?>
 

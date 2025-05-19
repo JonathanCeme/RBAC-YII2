@@ -156,4 +156,15 @@ class Perfil extends \yii\db\ActiveRecord
         $opciones = [];
         return Html::a($this->id, $url, $opciones);
     }
+
+    public function beforeValidate()
+{
+    if ($this->fecha_nacimiento != null) {
+                            
+        $nuevo_formato_fecha = date('Y-m-d', strtotime($this->fecha_nacimiento));
+        $this->fecha_nacimiento = $nuevo_formato_fecha;
+    }
+
+        return parent::beforeValidate();
+}
 }
