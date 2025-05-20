@@ -136,7 +136,8 @@ public function actionCreate()
      */
     public function actionUpdate()
     {
-            
+        PermisosHelpers::requerirUpgradeA('Pago');
+
         if($model =  Perfil::find()->where(['user_id' => 
             Yii::$app->user->identity->id])->one()) {
             
