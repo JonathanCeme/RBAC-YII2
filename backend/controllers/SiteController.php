@@ -1,11 +1,10 @@
 <?php
-
 namespace backend\controllers;
 
 use common\models\LoginForm;
+use common\models\PermisosHelpers;
 use Yii;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -20,24 +19,38 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
+
             'access' => [
-                'class' => AccessControl::class,
+                'class' => \yii\filters\AccessControl::className(),
+                'only'  => ['index', 'view', 'create', 'update', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
+                        'actions'       => ['index', 'create', 'view'],
+                        'allow'         => true,
+                        'roles'         => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return PermisosHelpers::requerirMinimoRol('Admin')
+                            && PermisosHelpers::requerirEstado('Activo');
+                        },
                     ],
                     [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'actions'       => ['update', 'delete'],
+                        'allow'         => true,
+                        'roles'         => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return PermisosHelpers::requerirMinimoRol('SuperUsuario')
+                            && PermisosHelpers::requerirEstado('Activo');
+                        },
                     ],
+
                 ],
+
             ],
-            'verbs' => [
-                'class' => VerbFilter::class,
+
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -72,7 +85,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (! Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 

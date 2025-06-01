@@ -3,6 +3,9 @@
 /** @var \yii\web\View $this */
 /** @var string $content */
 
+use common\models\PermisosHelpers;
+use backend\assets\FontAwesomeAsset;
+
 use backend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
@@ -28,55 +31,71 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header>
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } 
-    else
-    {
-         //Título de menú con una opción aqui agregamos el menu 
-         $menuItems[] = ['label' => 'Admon user', 'url' => ['/site/index'],
-         'options' =>['class' =>'dropdown'],
-         'template'=>'<a href="{url}" class="href_class">{label}</a>',
-         'items' =>[ ['label' => 'usuarios', 'url' => ['/project']],
-                     ['label' => 'perfil', 'url' => ['/perfil']],
-                     ['label' => 'Project User', 'url' => ['/project-user']],
-                     ],
-         ];  
-
-         $menuItems[] = ['label' => 'Transacciones', 'url' => ['/site/index'],
-         'options' =>['class' =>'dropdown'],
-         'template'=>'<a href="{url}" class="href_class">{label}</a>',
-         'items' =>[ ['label' => 'Compras', 'url' => ['/compras']],
-                     ['label' => 'Ventas', 'url' => ['/ventas']],
-                     ['label' => 'Devoluciones', 'url' => ['/devoluciones']],
-                     ],
-         ]; 
-    }    
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
-        'items' => $menuItems,
-    ]);
-    if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
-    } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout text-decoration-none']
-            )
-            . Html::endForm();
-    }
+     <?php
+if (!Yii::$app->user->isGuest){
+  
+    $es_admin = PermisosHelpers::requerirMinimoRol('Admin');
+  
+  NavBar::begin([
+  
+  'brandLabel' => 'Yii 2 Build <i class="fa fa-plug"></i> Admin',
+  'brandUrl' => Yii::$app->homeUrl,
+  'options' => [
+         'class' =>'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
+    ],
+  ]);
+  
+  } else {
+  
+  NavBar::begin([
+  
+    'brandLabel' => 'Yii 2 Build <i class="fa fa-plug"></i>',
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => [
+         'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
+    ],
+  ]);
+  
+          
+          
+  $menuItems = [
+    ['label' => 'Home', 'url' => ['site/index']],
+  ];
+  }
+  
+  if (!Yii::$app->user->isGuest && $es_admin) {
+  
+    $menuItems[] = ['label' => 'Usuarios', 'url' => ['user/index']];
+          
+    $menuItems[] = ['label' => 'Perfiles', 'url' => ['perfil/index']];
+          
+    $menuItems[] = ['label' => 'Roles', 'url' => ['rol/index']];
+              
+    $menuItems[] = ['label' => 'Tipos de Usuario', 'url' => ['tipo-usuario/index']];
+         
+    $menuItems[] = ['label' => 'Estados', 'url' => ['estado/index']];
+  
+  }
+  
+  if (Yii::$app->user->isGuest) {
+  
+   $menuItems[] = ['label' => 'Login', 'url' => ['site/login']];
+  
+  } else {
+  
+    $menuItems[] = ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+              ];
+  
+  } 
+                                                                                                                
+  echo Nav::widget([
+  
+    'options' => ['class' => 'navbar-nav navbar-right'],
+    'items' => $menuItems,
+  
+  ]);
     NavBar::end();
     ?>
 </header>
