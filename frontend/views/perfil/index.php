@@ -13,6 +13,7 @@ use yii\grid\GridView;
 $this->title = 'Perfils';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="perfil-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

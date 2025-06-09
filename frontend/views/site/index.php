@@ -1,8 +1,28 @@
 <?php
 /** @var yii\web\View $this */
 
+
+use yii\helpers\Html;
+
 $this->title = 'My Yii Application';
 ?>
+<style>
+    body {
+        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .lead{
+    text-align: center;
+}
+.titulo {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+}
+</style>
 <div class="site-index">
 
     <div class="jumbotron">
@@ -13,15 +33,14 @@ $this->title = 'My Yii Application';
         </p>
 
 
-        <h1>Yii 2 Build</h1>
+        <h1 class = "titulo">Yii 2 Build</h1>
 
         <p class="lead">Use esta plantilla de Yii 2 para comenzar Proyectos.</p>
 
 
         <br/>
 
-        <?php  echo FacebookPlugin::widget(['type'=>FacebookPlugin::LIKE,
-            'settings' => []]); ?>
+        
 
     </div>
 
