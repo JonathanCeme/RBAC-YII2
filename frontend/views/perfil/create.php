@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /** @var frontend\models\perfil $model */
 
 $this->title = 'Create Perfil';
-$this->params['breadcrumbs'][] = ['label' => 'Perfils', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Perfil', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="perfil-create">
