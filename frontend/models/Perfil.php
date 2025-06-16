@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use yii\filters\VerbFilter;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -39,18 +40,46 @@ class Perfil extends \yii\db\ActiveRecord
      * behaviors
      */
     public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+{
+    return [
+    'access' => [
+            'class' => \yii\filters\AccessControl::className(),
+            'only' => ['index', 'view','create', 'update', 'delete'],
+            'rules' => [
+                [
+                    'actions' => ['index', 'view','create', 'update', 'delete'],
+                    'allow' => true,
+                    'roles' => ['@'],
                 ],
-                'value' => new Expression('NOW()'),
+                    
             ],
-        ];
-    }
+        ],
+ 
+        'access2' => [
+            'class' => \yii\filters\AccessControl::className(),
+            'only' => ['index', 'view','create', 'update', 'delete'],
+            'rules' => [
+                [
+                   'actions' => ['index', 'view','create', 'update', 'delete'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+                        return PermisosHelpers::requerirEstado('Activo');
+                    }
+                 ],
+                    
+            ],
+               
+        ],
+            
+    'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+               'delete' => ['post'],
+            ],
+        ],
+    ];
+}
 
     /**
      * @inheritdoc
@@ -156,4 +185,15 @@ class Perfil extends \yii\db\ActiveRecord
         $opciones = [];
         return Html::a($this->id, $url, $opciones);
     }
+
+    public function beforeValidate()
+{
+    if ($this->fecha_nacimiento != null) {
+                            
+        $nuevo_formato_fecha = date('Y-m-d', strtotime($this->fecha_nacimiento));
+        $this->fecha_nacimiento = $nuevo_formato_fecha;
+    }
+
+        return parent::beforeValidate();
+}
 }
