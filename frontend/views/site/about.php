@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <div class="about-container text-center">
     <h1 class="display-4 mb-4"><?= Html::encode($this->title) ?></h1>
-    <p class="lead">Plantilla avanzada de Yii2 realizada por el equipo.</p>
+    <p class="lead">Este Software fue creado por Jonathan Idelfio Ceme Dzib </p>
     <hr>
     <p>Puedes personalizar este archivo para modificar el contenido de la página.</p>
     <code><?= __FILE__ ?></code>
