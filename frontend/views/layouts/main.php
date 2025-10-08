@@ -30,15 +30,16 @@ AppAsset::register($this);
 <header>
     <?php
     NavBar::begin([
-        'brandLabel' => 'Yii 2 Build',
+        'brandLabel' => 'Generador de reportes',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',
         ],
     ]);
-    $menuItems = [
+    $menuItems = [  /* enlaces del barmenu */
         ['label' => 'Home', 'url' => ['/site/index']],
         ['label' => 'About', 'url' => ['/site/about']],
+        ['label' => 'Imagenes', 'url' => ['imagenes/index']],
         ['label' => 'Upgrade', 'url' => ['/upgrade/index']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
     ];

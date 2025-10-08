@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
     body {
-        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80');
+        background-image: url('https://energy21.com.mx/wp-content/uploads/2025/02/CFE.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
